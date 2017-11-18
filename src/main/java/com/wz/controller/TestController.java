@@ -1,5 +1,7 @@
 package com.wz.controller;
 
+import com.wz.common.JsonData;
+import com.wz.exception.PermissionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,11 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Slf4j
 public class TestController {
 
-    @RequestMapping("/hello")
+    @RequestMapping("/hello.json")
     @ResponseBody
-    public String hello(){
+    public JsonData hello(){
         log.info("hello");
-        return "hello, permissions";
+        throw  new PermissionException("test exception");
+        //return JsonData.success("hello, permissions");
     }
 
 }
