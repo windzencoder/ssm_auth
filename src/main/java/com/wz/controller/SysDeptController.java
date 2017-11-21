@@ -27,7 +27,7 @@ public class SysDeptController {
      * 进入页面
      * @return
      */
-    @RequestMapping("/page.page")
+    @RequestMapping("/dept.page")
     public ModelAndView page(){
         return new ModelAndView("dept");
     }
