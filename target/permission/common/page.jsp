@@ -33,10 +33,19 @@
 
 <script type="text/javascript">
     var paginateTemplate = $("#paginateTemplate").html();
-    Mustache.parse(paginateTemplate);
-    
+    Mustache.parse(paginateTemplate);//预解析和缓存模板
+
+    /*
+    * url 链接
+    * total 总共多少条数据
+    * pageNo 当前页
+    * pageSize 每页多少条数据
+    * currentSize
+    * idElement
+    * callback
+    * */
     function renderPage(url, total, pageNo, pageSize, currentSize, idElement, callback) {
-        var maxPageNo = Math.ceil(total / pageSize);
+        var maxPageNo = Math.ceil(total / pageSize);//最大页数
         var paramStartChar = url.indexOf("?") > 0 ? "&" : "?";
         var from = (pageNo - 1) * pageSize + 1;
         var view = {
@@ -52,11 +61,11 @@
             nextUrl : (pageNo >= maxPageNo) ? '' : (url + paramStartChar + "pageNo=" + (pageNo + 1) + "&pageSize=" + pageSize),
             lastUrl : (pageNo >= maxPageNo) ? '' : (url + paramStartChar + "pageNo=" + maxPageNo + "&pageSize=" + pageSize)
         };
-        $("#" + idElement).html(Mustache.render(paginateTemplate, view));
+        $("#" + idElement).html(Mustache.render(paginateTemplate, view));//绑定数据
 
         $(".page-action").click(function(e) {
             e.preventDefault();
-            $("#" + idElement + " .pageNo").val($(this).attr("data-target"));
+            $("#" + idElement + " .pageNo").val($(this).attr("data-target"));//页码值
             var targetUrl  = $(this).attr("data-url");
             if(targetUrl != '') {
                 $.ajax({

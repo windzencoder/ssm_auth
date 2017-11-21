@@ -202,7 +202,7 @@
 
         var deptListTemplate = $('#deptListTemplate').html();
         Mustache.parse(deptListTemplate);
-        var userListTemplate = $('#userListTemplate').html();
+        var userListTemplate = $('#userListTemplate').html();//用户列表模板
         Mustache.parse(userListTemplate);
 
         loadDeptTree();
@@ -242,7 +242,7 @@
         // 绑定部门点击事件
         function bindDeptClick() {
 
-            //部门名称点击事件
+            //部门名称点击事件 加载部门对应的用户
             $(".dept-name").click(function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -314,6 +314,7 @@
             })
         }
 
+        //处理部门选中
         function handleDepSelected(deptId) {
             if (lastClickDeptId != -1) {
                 var lastDept = $("#dept_" + lastClickDeptId + " .dd2-content:first");
@@ -329,9 +330,9 @@
 
         //加载用户列表
         function loadUserList(deptId) {
-            var pageSize = $("#pageSize").val();
+            var pageSize = $("#pageSize").val();//每页展示多少条记录
             var url = "/sys/user/page.json?deptId=" + deptId;
-            var pageNo = $("#userPage .pageNo").val() || 1;
+            var pageNo = $("#userPage .pageNo").val() || 1;//分页控件中存在pageNo
             $.ajax({
                 url : url,
                 data: {
@@ -344,6 +345,7 @@
             })
         }
 
+        //渲染用户列表和分页
         function renderUserListAndPage(result, url) {
             if (result.ret) {
                 if (result.data.total > 0){
@@ -369,7 +371,7 @@
                         }
                     });
                     $("#userList").html(rendered);
-                    bindUserClick();
+                    bindUserClick();//绑定用户点击的方法
                     $.each(result.data.data, function(i, user) {
                         userMap[user.id] = user;
                     })

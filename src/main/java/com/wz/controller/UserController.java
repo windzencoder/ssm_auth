@@ -20,6 +20,13 @@ public class UserController {
     private SysUserService sysUserService;
 
 
+    /**
+     * 注销接口
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     */
     @RequestMapping("/logout.page")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getSession().invalidate();

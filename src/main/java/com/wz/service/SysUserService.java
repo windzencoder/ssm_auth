@@ -1,6 +1,8 @@
 package com.wz.service;
 
 import com.google.common.base.Preconditions;
+import com.wz.beans.PageQuery;
+import com.wz.beans.PageResult;
 import com.wz.dao.SysUserMapper;
 import com.wz.exception.ParamException;
 import com.wz.model.SysUser;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class SysUserService {
@@ -106,5 +109,21 @@ public class SysUserService {
         return sysUserMapper.findByKeyword(keyword);
     }
 
+
+    /**
+     * 分页查询获取user
+     * @param deptId
+     * @param pageQuery
+     * @return
+     */
+    public PageResult<SysUser> getPageByDeptId(int deptId, PageQuery pageQuery){
+        BeanValidator.check(pageQuery);
+        int count = sysUserMapper.countByDeptId(deptId);
+        if (count > 0){
+            List<SysUser> list = sysUserMapper.getPageByDeptId(deptId, pageQuery);
+            return PageResult.<SysUser>builder().total(count).data(list).build();
+        }
+        return PageResult.<SysUser>builder().build();
+    }
 
 }

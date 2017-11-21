@@ -1,7 +1,10 @@
 package com.wz.dao;
 
+import com.wz.beans.PageQuery;
 import com.wz.model.SysUser;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface SysUserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -38,4 +41,19 @@ public interface SysUserMapper {
      * @return
      */
     int countByTelephone(@Param("telephone") String telephone, @Param("id") Integer id);
+
+    /**
+     * 通过部门id查询user数量
+     * @param deptId
+     * @return
+     */
+    int countByDeptId(@Param("deptId") int deptId);
+
+    /**
+     * 分页获取user
+     * @param deptId
+     * @param page
+     * @return
+     */
+    List<SysUser> getPageByDeptId(@Param("deptId") int deptId, @Param("page")PageQuery page);
 }
