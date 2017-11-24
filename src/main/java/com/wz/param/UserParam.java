@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 /**
  * 用户参数
@@ -28,7 +25,8 @@ public class UserParam {
     private String telephone;
 
     @NotBlank(message = "邮箱不可以为空")
-    @Length(min = 5, max = 50, message = "邮箱长度需要在50个字符以内")
+    @Length(min = 5, max = 50, message = "邮箱长度需要在5至50个字符以内")
+    @Email(message = "邮箱格式不正确")
     private String mail;
 
     @NotNull(message = "必须提供用户所在部门")

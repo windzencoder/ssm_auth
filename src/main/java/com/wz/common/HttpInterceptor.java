@@ -30,9 +30,11 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
 //        long start = (Long) request.getAttribute(START_TIME);
 //        long end = System.currentTimeMillis();
 //        log.info("request finished. url:{}, cost:{}", url, end - start);
-//        removeThreadLocalInfo();
+
+        removeThreadLocalInfo();
     }
 
+    //一个接口正常结束和异常结束，都是调用这个方法
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         String url = request.getRequestURI().toString();
@@ -40,10 +42,10 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
         long end = System.currentTimeMillis();
         log.info("request completed. url:{}, cost:{}", url, end - start);
 
-//        removeThreadLocalInfo();
+        removeThreadLocalInfo();
     }
 
-//    public void removeThreadLocalInfo() {
-//        RequestHolder.remove();;
-//    }
+    public void removeThreadLocalInfo() {
+        RequestHolder.remove();;
+    }
 }

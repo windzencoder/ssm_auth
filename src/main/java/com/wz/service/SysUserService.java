@@ -3,6 +3,7 @@ package com.wz.service;
 import com.google.common.base.Preconditions;
 import com.wz.beans.PageQuery;
 import com.wz.beans.PageResult;
+import com.wz.common.RequestHolder;
 import com.wz.dao.SysUserMapper;
 import com.wz.exception.ParamException;
 import com.wz.model.SysUser;
@@ -43,7 +44,7 @@ public class SysUserService {
         SysUser user = SysUser.builder().username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail())
                 .password(encryptedPassword).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
 
-        user.setOperator("system-update");//TODO:
+        user.setOperator(RequestHolder.getCurrentUser().getUsername());
         user.setOperateIp("127.0.0.1");//TODO:
         user.setOperateTime(new Date());//TODO:
 
@@ -71,7 +72,7 @@ public class SysUserService {
         SysUser after = SysUser.builder().id(param.getId()).username(param.getUsername()).telephone(param.getTelephone()).mail(param.getMail())
                 .deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
 
-        after.setOperator("system-update");//TODO:
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
         after.setOperateIp("127.0.0.1");//TODO:
         after.setOperateTime(new Date());//TODO:
 

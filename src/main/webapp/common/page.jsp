@@ -38,9 +38,9 @@
     /*
     * url 链接
     * total 总共多少条数据
-    * pageNo 当前页
+    * pageNo 当前页 pageNo可能为字符串，所有可以 +0 后，再做计算
     * pageSize 每页多少条数据
-    * currentSize
+    * currentSize 例如可能没有pageSize多数据
     * idElement
     * callback
     * */
@@ -54,8 +54,8 @@
             total : total,
             pageNo : pageNo,
             maxPageNo : maxPageNo,
-            nextPageNo: pageNo >= maxPageNo ? maxPageNo : (pageNo + 1),
-            beforePageNo : pageNo == 1 ? 1 : (pageNo - 1),
+            nextPageNo: pageNo >= maxPageNo ? maxPageNo : (pageNo - 0 + 1),
+            beforePageNo : pageNo == 1 ? 1 : (pageNo - 0 - 1),
             firstUrl : (pageNo == 1) ? '' : (url + paramStartChar + "pageNo=1&pageSize=" + pageSize),
             beforeUrl: (pageNo == 1) ? '' : (url + paramStartChar + "pageNo=" + (pageNo - 1) + "&pageSize=" + pageSize),
             nextUrl : (pageNo >= maxPageNo) ? '' : (url + paramStartChar + "pageNo=" + (pageNo + 1) + "&pageSize=" + pageSize),

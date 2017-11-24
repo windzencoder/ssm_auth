@@ -386,6 +386,7 @@
             }
         }
 
+        //用户添加
         $(".user-add").click(function() {
             $("#dialog-user-form").dialog({
                 modal: true,
@@ -395,7 +396,7 @@
                     optionStr = "";
                     recursiveRenderDeptSelect(deptList, 1);
                     $("#userForm")[0].reset();
-                    $("#deptSelectId").html(optionStr);
+                    $("#deptSelectId").html(optionStr);//选择模板
                 },
                 buttons : {
                     "添加": function(e) {
@@ -413,6 +414,8 @@
                 }
             });
         });
+
+        //or编辑用户按钮事件
         function bindUserClick() {
             $(".user-acl").click(function (e) {
                 e.preventDefault();
@@ -432,6 +435,7 @@
                     }
                 })
             });
+            //编辑用户
             $(".user-edit").click(function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -448,7 +452,7 @@
 
                         var targetUser = userMap[userId];
                         if (targetUser) {
-                            $("#deptSelectId").val(targetUser.deptId);
+                            $("#deptSelectId").val(targetUser.deptId);//所属部门
                             $("#userName").val(targetUser.username);
                             $("#userMail").val(targetUser.mail);
                             $("#userTelephone").val(targetUser.telephone);
@@ -524,6 +528,7 @@
             }
         }
 
+        //添加or更新用户
         function updateUser(isCreate, successCallback, failCallback) {
             $.ajax({
                 url: isCreate ? "/sys/user/save.json" : "/sys/user/update.json",

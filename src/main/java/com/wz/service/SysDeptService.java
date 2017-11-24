@@ -1,6 +1,7 @@
 package com.wz.service;
 
 import com.google.common.base.Preconditions;
+import com.wz.common.RequestHolder;
 import com.wz.dao.SysDeptMapper;
 import com.wz.exception.ParamException;
 import com.wz.model.SysDept;
@@ -38,7 +39,7 @@ public class SysDeptService {
          */
         dept.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()));
 
-        dept.setOperator("system");//TODO:
+        dept.setOperator(RequestHolder.getCurrentUser().getUsername());
         dept.setOperateIp("127.0.0.1");//TODO:
         dept.setOperateTime(new Date());//TODO:
 
@@ -65,7 +66,7 @@ public class SysDeptService {
                 .seq(param.getSeq()).remark(param.getRemark()).build();
         after.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()));
 
-        after.setOperator("system-update");//TODO:
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());//TODO:
         after.setOperateIp("127.0.0.1");//TODO:
         after.setOperateTime(new Date());//TODO:
 
