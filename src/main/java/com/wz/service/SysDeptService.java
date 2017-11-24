@@ -36,6 +36,7 @@ public class SysDeptService {
                 .seq(param.getSeq()).remark(param.getRemark()).build();
         /**
          * 设置level层级
+         * 获取父id的level+父id
          * 例如 getParentId() 为 1， getParentId() 对应的level为 1.1，则当前level 1.1.1
          */
         dept.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()));
@@ -67,7 +68,7 @@ public class SysDeptService {
                 .seq(param.getSeq()).remark(param.getRemark()).build();
         after.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()));
 
-        after.setOperator(RequestHolder.getCurrentUser().getUsername());//TODO:
+        after.setOperator(RequestHolder.getCurrentUser().getUsername());
         after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperateTime(new Date());
 
@@ -84,13 +85,13 @@ public class SysDeptService {
     private void updateWithChild(SysDept before, SysDept after) {
         String newLevelPrefix = after.getLevel();
         String oldLevelPrefix = before.getLevel();
-        if (!after.getLevel().equals(before.getLevel())) {//是否需要做子部门的更新
+        if (!after.getLevel().equals(before.getLevel())) {//是否需要做子部门的更新，检查level是否相同
             //取出level对应的所有的子部门
             List<SysDept> deptList = sysDeptMapper.getChildDeptListByLevel(before.getLevel());
             if (CollectionUtils.isNotEmpty(deptList)) {
                 for (SysDept dept : deptList) {
                     String level = dept.getLevel();
-                    if (level.indexOf(oldLevelPrefix) == 0) {
+                    if (level.indexOf(oldLevelPrefix) == 0) {//以oldLevelPrefix开头
                         level = newLevelPrefix + level.substring(oldLevelPrefix.length());
                         dept.setLevel(level);
                     }

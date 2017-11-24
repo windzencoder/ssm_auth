@@ -21,7 +21,7 @@ public class DeptLevelDto extends SysDept{
 
     public static DeptLevelDto adapt(SysDept dept) {
         DeptLevelDto dto = new DeptLevelDto();
-        BeanUtils.copyProperties(dept, dto);
+        BeanUtils.copyProperties(dept, dto);//复制
         return dto;
     }
 

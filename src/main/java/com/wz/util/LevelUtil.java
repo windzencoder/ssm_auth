@@ -2,6 +2,9 @@ package com.wz.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * 层级计算工具
+ */
 public class LevelUtil {
 
     public final static String SEPARATOR = ".";

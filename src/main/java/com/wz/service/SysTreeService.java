@@ -149,7 +149,7 @@ public class SysTreeService {
         List<SysDept> deptList = sysDeptMapper.getAllDept();
 
         List<DeptLevelDto> dtoList = Lists.newArrayList();
-        for (SysDept dept : deptList) {
+        for (SysDept dept : deptList) {//转为dto
             DeptLevelDto dto = DeptLevelDto.adapt(dept);
             dtoList.add(dto);
         }
@@ -162,11 +162,11 @@ public class SysTreeService {
         }
         /**
          * 注意Multimap的用法
-         * key：dto的level 同一层级 放在一个level下
+         * key：dto的level 同一层级 放在一个list中下
          */
         // level -> [dept1, dept2, ...] Map<String, List<Object>>
         Multimap<String, DeptLevelDto> levelDeptMap = ArrayListMultimap.create();
-        //顶级部门
+        //顶级部门（第一层，level为0）
         List<DeptLevelDto> rootList = Lists.newArrayList();
 
         for (DeptLevelDto dto : deptLevelList) {
@@ -186,6 +186,12 @@ public class SysTreeService {
         return rootList;
     }
 
+    /**
+     *
+     * @param deptLevelList 某一个层级的列表
+     * @param level 该层级的level
+     * @param levelDeptMap 相当于数据源
+     */
     // level:0, 0, all 0->0.1,0.2
     // level:0.1
     // level:0.2
@@ -195,7 +201,7 @@ public class SysTreeService {
             DeptLevelDto deptLevelDto = deptLevelList.get(i);
             // 处理当前层级的数据 下一个层级的level
             String nextLevel = LevelUtil.calculateLevel(level, deptLevelDto.getId());
-            // 处理下一层
+            // 处理下一层，相当于从数据源中取key所对应的集合
             List<DeptLevelDto> tempDeptList = (List<DeptLevelDto>) levelDeptMap.get(nextLevel);
             if (CollectionUtils.isNotEmpty(tempDeptList)) {
                 // 排序
