@@ -9,6 +9,10 @@ import lombok.ToString;
 
 import java.util.Set;
 
+/**
+ * 邮件的一些信息
+ */
+
 @Getter
 @Setter
 @ToString

@@ -7,6 +7,7 @@ import com.wz.exception.ParamException;
 import com.wz.model.SysDept;
 import com.wz.param.DeptParam;
 import com.wz.util.BeanValidator;
+import com.wz.util.IpUtil;
 import com.wz.util.LevelUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -40,8 +41,8 @@ public class SysDeptService {
         dept.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()));
 
         dept.setOperator(RequestHolder.getCurrentUser().getUsername());
-        dept.setOperateIp("127.0.0.1");//TODO:
-        dept.setOperateTime(new Date());//TODO:
+        dept.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        dept.setOperateTime(new Date());
 
         sysDeptMapper.insertSelective(dept);
     }
@@ -67,8 +68,8 @@ public class SysDeptService {
         after.setLevel(LevelUtil.calculateLevel(getLevel(param.getParentId()), param.getParentId()));
 
         after.setOperator(RequestHolder.getCurrentUser().getUsername());//TODO:
-        after.setOperateIp("127.0.0.1");//TODO:
-        after.setOperateTime(new Date());//TODO:
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        after.setOperateTime(new Date());
 
         updateWithChild(before, after);
 

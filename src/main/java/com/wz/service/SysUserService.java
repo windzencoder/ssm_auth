@@ -9,6 +9,7 @@ import com.wz.exception.ParamException;
 import com.wz.model.SysUser;
 import com.wz.param.UserParam;
 import com.wz.util.BeanValidator;
+import com.wz.util.IpUtil;
 import com.wz.util.MD5Util;
 import com.wz.util.PasswordUtil;
 import org.springframework.stereotype.Service;
@@ -45,10 +46,12 @@ public class SysUserService {
                 .password(encryptedPassword).deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
 
         user.setOperator(RequestHolder.getCurrentUser().getUsername());
-        user.setOperateIp("127.0.0.1");//TODO:
-        user.setOperateTime(new Date());//TODO:
+        user.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        user.setOperateTime(new Date());
 
         // TODO: sendEmail
+
+
 
         sysUserMapper.insertSelective(user);
 
@@ -73,8 +76,8 @@ public class SysUserService {
                 .deptId(param.getDeptId()).status(param.getStatus()).remark(param.getRemark()).build();
 
         after.setOperator(RequestHolder.getCurrentUser().getUsername());
-        after.setOperateIp("127.0.0.1");//TODO:
-        after.setOperateTime(new Date());//TODO:
+        after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
+        after.setOperateTime(new Date());
 
         sysUserMapper.updateByPrimaryKeySelective(after);
 
