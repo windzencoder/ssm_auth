@@ -146,7 +146,7 @@
     FROM sys_dept
   </select>
 
-  <!--通过level来查询子部门-->
+  <!--通过level来查询子部门 ||相当于连接字符串-->
   <select id="getChildDeptListByLevel" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

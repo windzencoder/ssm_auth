@@ -4,8 +4,13 @@ package com.wz.service;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.wz.dao.SysAclModuleMapper;
 import com.wz.dao.SysDeptMapper;
+import com.wz.dto.AclDto;
+import com.wz.dto.AclModuleLevelDto;
 import com.wz.dto.DeptLevelDto;
+import com.wz.model.SysAcl;
+import com.wz.model.SysAclModule;
 import com.wz.model.SysDept;
 import com.wz.util.LevelUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -25,8 +30,9 @@ public class SysTreeService {
     @Resource
     private SysDeptMapper sysDeptMapper;
 
-//    @Resource
-//    private SysAclModuleMapper sysAclModuleMapper;
+    @Resource
+    private SysAclModuleMapper sysAclModuleMapper;
+
 //    @Resource
 //    private SysCoreService sysCoreService;
 //    @Resource
@@ -43,7 +49,7 @@ public class SysTreeService {
 //        }
 //        return aclListToTree(aclDtoList);
 //    }
-//
+
 //    public List<AclModuleLevelDto> roleTree(int roleId) {
 //        // 1、当前用户已分配的权限点
 //        List<SysAcl> userAclList = sysCoreService.getCurrentUserAclList();
@@ -98,47 +104,55 @@ public class SysTreeService {
 //            bindAclsWithOrder(dto.getAclModuleList(), moduleIdAclMap);
 //        }
 //    }
-//
-//    public List<AclModuleLevelDto> aclModuleTree() {
-//        List<SysAclModule> aclModuleList = sysAclModuleMapper.getAllAclModule();
-//        List<AclModuleLevelDto> dtoList = Lists.newArrayList();
-//        for (SysAclModule aclModule : aclModuleList) {
-//            dtoList.add(AclModuleLevelDto.adapt(aclModule));
-//        }
-//        return aclModuleListToTree(dtoList);
-//    }
-//
-//    public List<AclModuleLevelDto> aclModuleListToTree(List<AclModuleLevelDto> dtoList) {
-//        if (CollectionUtils.isEmpty(dtoList)) {
-//            return Lists.newArrayList();
-//        }
-//        // level -> [aclmodule1, aclmodule2, ...] Map<String, List<Object>>
-//        Multimap<String, AclModuleLevelDto> levelAclModuleMap = ArrayListMultimap.create();
-//        List<AclModuleLevelDto> rootList = Lists.newArrayList();
-//
-//        for (AclModuleLevelDto dto : dtoList) {
-//            levelAclModuleMap.put(dto.getLevel(), dto);
-//            if (LevelUtil.ROOT.equals(dto.getLevel())) {
-//                rootList.add(dto);
-//            }
-//        }
-//        Collections.sort(rootList, aclModuleSeqComparator);
-//        transformAclModuleTree(rootList, LevelUtil.ROOT, levelAclModuleMap);
-//        return rootList;
-//    }
-//
-//    public void transformAclModuleTree(List<AclModuleLevelDto> dtoList, String level, Multimap<String, AclModuleLevelDto> levelAclModuleMap) {
-//        for (int i = 0; i < dtoList.size(); i++) {
-//            AclModuleLevelDto dto = dtoList.get(i);
-//            String nextLevel = LevelUtil.calculateLevel(level, dto.getId());
-//            List<AclModuleLevelDto> tempList = (List<AclModuleLevelDto>) levelAclModuleMap.get(nextLevel);
-//            if (CollectionUtils.isNotEmpty(tempList)) {
-//                Collections.sort(tempList, aclModuleSeqComparator);
-//                dto.setAclModuleList(tempList);
-//                transformAclModuleTree(tempList, nextLevel, levelAclModuleMap);
-//            }
-//        }
-//    }
+
+
+    /**
+     * 权限模块树
+     *
+     * @return
+     */
+    public List<AclModuleLevelDto> aclModuleTree() {
+        //获取所有权限模块
+        List<SysAclModule> aclModuleList = sysAclModuleMapper.getAllAclModule();
+        //SysAclModule -> AclModuleLevelDto 适配树形结构
+        List<AclModuleLevelDto> dtoList = Lists.newArrayList();
+        for (SysAclModule aclModule : aclModuleList) {
+            dtoList.add(AclModuleLevelDto.adapt(aclModule));
+        }
+        return aclModuleListToTree(dtoList);
+    }
+
+    public List<AclModuleLevelDto> aclModuleListToTree(List<AclModuleLevelDto> dtoList) {
+        if (CollectionUtils.isEmpty(dtoList)) {
+            return Lists.newArrayList();
+        }
+        // level -> [aclmodule1, aclmodule2, ...] Map<String, List<Object>>
+        Multimap<String, AclModuleLevelDto> levelAclModuleMap = ArrayListMultimap.create();
+        List<AclModuleLevelDto> rootList = Lists.newArrayList();//顶级权限集合
+
+        for (AclModuleLevelDto dto : dtoList) {
+            levelAclModuleMap.put(dto.getLevel(), dto);
+            if (LevelUtil.ROOT.equals(dto.getLevel())) {
+                rootList.add(dto);
+            }
+        }
+        Collections.sort(rootList, aclModuleSeqComparator);
+        transformAclModuleTree(rootList, LevelUtil.ROOT, levelAclModuleMap);//递归
+        return rootList;
+    }
+
+    public void transformAclModuleTree(List<AclModuleLevelDto> dtoList, String level, Multimap<String, AclModuleLevelDto> levelAclModuleMap) {
+        for (int i = 0; i < dtoList.size(); i++) {
+            AclModuleLevelDto dto = dtoList.get(i);
+            String nextLevel = LevelUtil.calculateLevel(level, dto.getId());
+            List<AclModuleLevelDto> tempList = (List<AclModuleLevelDto>) levelAclModuleMap.get(nextLevel);
+            if (CollectionUtils.isNotEmpty(tempList)) {
+                Collections.sort(tempList, aclModuleSeqComparator);
+                dto.setAclModuleList(tempList);
+                transformAclModuleTree(tempList, nextLevel, levelAclModuleMap);
+            }
+        }
+    }
 
 
     /**
@@ -219,12 +233,12 @@ public class SysTreeService {
             return o1.getSeq() - o2.getSeq();
         }
     };
-//
-//    public Comparator<AclModuleLevelDto> aclModuleSeqComparator = new Comparator<AclModuleLevelDto>() {
-//        public int compare(AclModuleLevelDto o1, AclModuleLevelDto o2) {
-//            return o1.getSeq() - o2.getSeq();
-//        }
-//    };
+
+    public Comparator<AclModuleLevelDto> aclModuleSeqComparator = new Comparator<AclModuleLevelDto>() {
+        public int compare(AclModuleLevelDto o1, AclModuleLevelDto o2) {
+            return o1.getSeq() - o2.getSeq();
+        }
+    };
 //
 //    public Comparator<AclDto> aclSeqComparator = new Comparator<AclDto>() {
 //        public int compare(AclDto o1, AclDto o2) {
