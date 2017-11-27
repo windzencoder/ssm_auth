@@ -489,6 +489,7 @@
             })
         }
 
+        //权限表分页列表
         function renderAclListAndPage(result, url) {
             if(result.ret) {
                 if (result.data.total > 0){
@@ -551,6 +552,7 @@
                     }
                 })
             });
+            //编辑事件
             $(".acl-edit").click(function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -593,6 +595,7 @@
             })
         }
 
+        //新增权限
         $(".acl-add").click(function() {
             $("#dialog-acl-form").dialog({
                 modal: true,
