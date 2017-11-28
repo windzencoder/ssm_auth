@@ -178,7 +178,7 @@
 
         function onClickTreeNode(e, treeId, treeNode) { // 绑定单击事件
             var zTree = $.fn.zTree.getZTreeObj("roleAclTree");
-            zTree.expandNode(treeNode);
+            zTree.expandNode(treeNode);//展开 / 折叠 指定的节点
         }
 
         //加载角色列表
@@ -234,6 +234,7 @@
                     }
                 })
             });
+            //点击角色名称事件
             $(".role-name").click(function (e) {
                e.preventDefault();
                e.stopPropagation();
@@ -242,6 +243,7 @@
             });
         }
 
+        //处理角色选中
         function handleRoleSelected(roleId) {
             if (lastRoleId != -1) {
                 var lastRole = $("#role_" + lastRoleId + " .dd2-content:first");
@@ -259,6 +261,7 @@
             }
         }
 
+        //加载角色权限相关内容
         function loadRoleAcl(selectedRoleId) {
             if (selectedRoleId == -1) {
                 return;
@@ -279,6 +282,7 @@
             });
         }
 
+        //获取zTree中选中的id
         function getTreeSelectedId() {
             var treeObj = $.fn.zTree.getZTreeObj("roleAclTree");
             var nodes = treeObj.getCheckedNodes(true);
@@ -291,6 +295,7 @@
             return v.length > 0 ? v.substring(1): v;
         }
 
+        //渲染角色树
         function renderRoleTree(aclModuleList) {
             zTreeObj = [];
             recursivePrepareTreeData(aclModuleList);
@@ -300,19 +305,24 @@
             $.fn.zTree.init($("#roleAclTree"), setting, zTreeObj);
         }
 
+        /**
+         * 递归调用
+         * aclModuleList指顶层权限模块集合
+         * @param aclModuleList
+         */
         function recursivePrepareTreeData(aclModuleList) {
             // prepare nodeMap
             if (aclModuleList && aclModuleList.length > 0) {
-                $(aclModuleList).each(function(i, aclModule) {
-                    var hasChecked = false;
+                $(aclModuleList).each(function(i, aclModule) {//遍历子权限模块
+                    var hasChecked = false;//如果有选中的就展开
                     if (aclModule.aclList && aclModule.aclList.length > 0) {
-                        $(aclModule.aclList).each(function(i, acl) {
+                        $(aclModule.aclList).each(function(i, acl) {//遍历权限点列表
                             zTreeObj.push({
                                 id: aclPrefix + acl.id,
                                 pId: modulePrefix + acl.aclModuleId,
                                 name: acl.name + ((acl.type == 1) ? '(菜单)' : ''),
                                 chkDisabled: !acl.hasAcl,
-                                checked: acl.checked,
+                                checked: acl.checked,//是否选中
                                 dataId: acl.id
                             });
                             if(acl.checked) {
@@ -322,12 +332,13 @@
                     }
                     if ((aclModule.aclModuleList && aclModule.aclModuleList.length > 0) ||
                         (aclModule.aclList && aclModule.aclList.length > 0)) {
-                        nodeMap[modulePrefix + aclModule.id] = {
+                        nodeMap[modulePrefix + aclModule.id] = {//权限模块
                             id : modulePrefix + aclModule.id,
                             pId: modulePrefix + aclModule.parentId,
                             name: aclModule.name,
                             open: hasChecked
                         };
+                        //如果其子项有选中的，则都展开
                         var tempAclModule = nodeMap[modulePrefix + aclModule.id];
                         while(hasChecked && tempAclModule) {
                             if(tempAclModule) {
@@ -335,7 +346,7 @@
                                     id: tempAclModule.id,
                                     pId: tempAclModule.pId,
                                     name: tempAclModule.name,
-                                    open: true
+                                    open: true//展开
                                 }
                             }
                             tempAclModule = nodeMap[tempAclModule.pId];
@@ -371,6 +382,7 @@
             })
         });
 
+        //保存角色权限关系
         $(".saveRoleAcl").click(function (e) {
             e.preventDefault();
             if (lastRoleId == -1) {
@@ -414,6 +426,7 @@
                 }
             })
         }
+        //boostrap tab事件
         $("#roleTab a[data-toggle='tab']").on("shown.bs.tab", function(e) {
             if(lastRoleId == -1) {
                 showMessage("加载角色关系","请先在左侧选择操作的角色", false);

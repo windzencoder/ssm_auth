@@ -11,7 +11,7 @@ import org.springframework.beans.BeanUtils;
 @ToString
 public class AclDto extends SysAcl {
 
-    // 是否要默认选中
+    // 权限点是否要默认选中
     private boolean checked = false;
 
     // 是否有权限操作
