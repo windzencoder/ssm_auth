@@ -31,4 +31,6 @@ public interface SysAclMapper {
 
     //权限点id列表获取权限点列表
     List<SysAcl> getByIdList(@Param("idList") List<Integer> userAclIdList);
+
+    List<SysAcl> getByUrl(@Param("url") String url);
 }
