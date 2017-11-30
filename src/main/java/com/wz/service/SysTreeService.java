@@ -42,17 +42,22 @@ public class SysTreeService {
     @Resource
     private SysAclMapper sysAclMapper;
 
-//    public List<AclModuleLevelDto> userAclTree(int userId) {
-//        List<SysAcl> userAclList = sysCoreService.getUserAclList(userId);
-//        List<AclDto> aclDtoList = Lists.newArrayList();
-//        for (SysAcl acl : userAclList) {
-//            AclDto dto = AclDto.adapt(acl);
-//            dto.setHasAcl(true);
-//            dto.setChecked(true);
-//            aclDtoList.add(dto);
-//        }
-//        return aclListToTree(aclDtoList);
-//    }
+    /**
+     * 当前用户已有权限组成的树
+     * @param userId
+     * @return
+     */
+    public List<AclModuleLevelDto> userAclTree(int userId) {
+        List<SysAcl> userAclList = sysCoreService.getUserAclList(userId);
+        List<AclDto> aclDtoList = Lists.newArrayList();
+        for (SysAcl acl : userAclList) {
+            AclDto dto = AclDto.adapt(acl);
+            dto.setHasAcl(true);
+            dto.setChecked(true);
+            aclDtoList.add(dto);
+        }
+        return aclListToTree(aclDtoList);
+    }
 
     /**
      * 权限树

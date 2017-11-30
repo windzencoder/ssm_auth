@@ -534,6 +534,7 @@
         }
 
         function bindAclClick() {
+            //获取权限点分配的用户和角色
             $(".acl-role").click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();

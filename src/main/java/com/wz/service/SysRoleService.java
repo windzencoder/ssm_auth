@@ -27,12 +27,15 @@ public class SysRoleService {
     @Resource
     private SysRoleMapper sysRoleMapper;
 
-//    @Resource
-//    private SysRoleUserMapper sysRoleUserMapper;
-//    @Resource
-//    private SysRoleAclMapper sysRoleAclMapper;
-//    @Resource
-//    private SysUserMapper sysUserMapper;
+    @Resource
+    private SysRoleUserMapper sysRoleUserMapper;
+
+    @Resource
+    private SysRoleAclMapper sysRoleAclMapper;
+
+    @Resource
+    private SysUserMapper sysUserMapper;
+
 //    @Resource
 //    private SysLogService sysLogService;
 
@@ -89,31 +92,36 @@ public class SysRoleService {
         return sysRoleMapper.countByName(name, id) > 0;
     }
 
-//    public List<SysRole> getRoleListByUserId(int userId) {
-//        List<Integer> roleIdList = sysRoleUserMapper.getRoleIdListByUserId(userId);
-//        if (CollectionUtils.isEmpty(roleIdList)) {
-//            return Lists.newArrayList();
-//        }
-//        return sysRoleMapper.getByIdList(roleIdList);
-//    }
+    /**
+     * 用户id对应的角色列表
+     * @param userId
+     * @return
+     */
+    public List<SysRole> getRoleListByUserId(int userId) {
+        List<Integer> roleIdList = sysRoleUserMapper.getRoleIdListByUserId(userId);
+        if (CollectionUtils.isEmpty(roleIdList)) {
+            return Lists.newArrayList();
+        }
+        return sysRoleMapper.getByIdList(roleIdList);
+    }
 
-//    public List<SysRole> getRoleListByAclId(int aclId) {
-//        List<Integer> roleIdList = sysRoleAclMapper.getRoleIdListByAclId(aclId);
-//        if (CollectionUtils.isEmpty(roleIdList)) {
-//            return Lists.newArrayList();
-//        }
-//        return sysRoleMapper.getByIdList(roleIdList);
-//    }
+    public List<SysRole> getRoleListByAclId(int aclId) {
+        List<Integer> roleIdList = sysRoleAclMapper.getRoleIdListByAclId(aclId);
+        if (CollectionUtils.isEmpty(roleIdList)) {
+            return Lists.newArrayList();
+        }
+        return sysRoleMapper.getByIdList(roleIdList);
+    }
 
-//    public List<SysUser> getUserListByRoleList(List<SysRole> roleList) {
-//        if (CollectionUtils.isEmpty(roleList)) {
-//            return Lists.newArrayList();
-//        }
-//        List<Integer> roleIdList = roleList.stream().map(role -> role.getId()).collect(Collectors.toList());
-//        List<Integer> userIdList = sysRoleUserMapper.getUserIdListByRoleIdList(roleIdList);
-//        if (CollectionUtils.isEmpty(userIdList)) {
-//            return Lists.newArrayList();
-//        }
-//        return sysUserMapper.getByIdList(userIdList);
-//    }
+    public List<SysUser> getUserListByRoleList(List<SysRole> roleList) {
+        if (CollectionUtils.isEmpty(roleList)) {
+            return Lists.newArrayList();
+        }
+        List<Integer> roleIdList = roleList.stream().map(role -> role.getId()).collect(Collectors.toList());
+        List<Integer> userIdList = sysRoleUserMapper.getUserIdListByRoleIdList(roleIdList);
+        if (CollectionUtils.isEmpty(userIdList)) {
+            return Lists.newArrayList();
+        }
+        return sysUserMapper.getByIdList(userIdList);
+    }
 }

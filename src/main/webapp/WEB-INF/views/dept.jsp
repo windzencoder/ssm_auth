@@ -417,6 +417,7 @@
 
         //or编辑用户按钮事件
         function bindUserClick() {
+            //用户权限数据
             $(".user-acl").click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();

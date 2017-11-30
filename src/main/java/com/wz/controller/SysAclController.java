@@ -51,5 +51,12 @@ public class SysAclController {
         return JsonData.success(sysAclService.getPageByAclModuleId(aclModuleId, pageQuery));
     }
 
+    @RequestMapping("/acls.json")
+    @ResponseBody
+    public JsonData acls(@RequestParam("aclId") int aclId)
+    {
+        return JsonData.success();
+    }
+
 
 }
