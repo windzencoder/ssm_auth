@@ -432,15 +432,16 @@
                 showMessage("加载角色关系","请先在左侧选择操作的角色", false);
                 return;
             }
-            if (e.target.getAttribute("href") == '#roleAclTab') {
+            if (e.target.getAttribute("href") == '#roleAclTab') {//角色与权限
                 selectFirstTab = true;
                 loadRoleAcl(lastRoleId);
-            } else {
+            } else {//角色与用户
                 selectFirstTab = false;
                 loadRoleUser(lastRoleId);
             }
         });
 
+        //加载角色用户关系
         function loadRoleUser(selectedRoleId) {
             $.ajax({
                 url: "/sys/role/users.json",
@@ -471,6 +472,7 @@
             });
         }
 
+        //保存角色用户事件
         $(".saveRoleUser").click(function (e) {
             e.preventDefault();
             if (lastRoleId == -1) {

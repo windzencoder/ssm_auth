@@ -130,4 +130,12 @@ public class SysUserService {
         return PageResult.<SysUser>builder().build();
     }
 
+    /**
+     * 获取所有用户
+     * @return
+     */
+    public List<SysUser> getAll(){
+        return sysUserMapper.getAll();
+    }
+
 }
