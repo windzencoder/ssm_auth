@@ -5,8 +5,10 @@ import com.wz.dto.DeptLevelDto;
 import com.wz.param.DeptParam;
 import com.wz.service.SysDeptService;
 import com.wz.service.SysTreeService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -70,6 +72,18 @@ public class SysDeptController {
         sysDeptService.update(param);
         return JsonData.success();
 
+    }
+
+    /**
+     * 删除部门
+     * @param id
+     * @return
+     */
+    @RequestMapping("/delete.json")
+    @ResponseBody
+    public JsonData deleteDept(@RequestParam("id") int id){
+        sysDeptService.delete(id);
+        return JsonData.success();
     }
 
 }

@@ -3,6 +3,7 @@ package com.wz.service;
 import com.google.common.base.Preconditions;
 import com.wz.common.RequestHolder;
 import com.wz.dao.SysDeptMapper;
+import com.wz.dao.SysUserMapper;
 import com.wz.exception.ParamException;
 import com.wz.model.SysDept;
 import com.wz.param.DeptParam;
@@ -22,6 +23,9 @@ public class SysDeptService {
 
     @Resource
     private SysDeptMapper sysDeptMapper;
+
+    @Resource
+    private SysUserMapper sysUserMapper;
 
     /**
      * 保存部门
@@ -126,6 +130,28 @@ public class SysDeptService {
             return null;
         }
         return  dept.getLevel();
+    }
+
+
+    /**
+     * 删除部门
+     * @param deptId
+     */
+    public void delete(int deptId){
+        SysDept dept = sysDeptMapper.selectByPrimaryKey(deptId);
+        Preconditions.checkNotNull(dept, "待删除部门不存在，无法删除");
+
+        if(sysDeptMapper.countByParentId(dept.getId()) > 0){
+            throw new ParamException("当前部门下有子部门，无法删除");
+        }
+
+        if(sysUserMapper.countByDeptId(dept.getId()) > 0){
+            throw new ParamException("当前部门下有用户，无法删除");
+        }
+
+        //删除
+        sysDeptMapper.deleteByPrimaryKey(deptId);
+
     }
 
 }

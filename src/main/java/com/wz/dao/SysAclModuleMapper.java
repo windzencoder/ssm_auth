@@ -29,4 +29,6 @@ public interface SysAclModuleMapper {
 
     //获取所有权限模块
     List<SysAclModule> getAllAclModule();
+
+    int countByParentId(@Param("aclModuleId") Integer aclModuleId);
 }
