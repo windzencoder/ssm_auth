@@ -85,7 +85,7 @@ public class SysUserController {
         Map<String, Object> map = Maps.newHashMap();
         map.put("acls", sysTreeService.userAclTree(userId));
         map.put("roles", sysRoleService.getRoleListByUserId(userId));
-        return JsonData.success();
+        return JsonData.success(map);
     }
 
 }

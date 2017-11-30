@@ -105,6 +105,11 @@ public class SysRoleService {
         return sysRoleMapper.getByIdList(roleIdList);
     }
 
+    /**
+     * 权限对应的角色列表
+     * @param aclId
+     * @return
+     */
     public List<SysRole> getRoleListByAclId(int aclId) {
         List<Integer> roleIdList = sysRoleAclMapper.getRoleIdListByAclId(aclId);
         if (CollectionUtils.isEmpty(roleIdList)) {
@@ -113,6 +118,11 @@ public class SysRoleService {
         return sysRoleMapper.getByIdList(roleIdList);
     }
 
+    /**
+     * 根据角色列表获取用户列表
+     * @param roleList
+     * @return
+     */
     public List<SysUser> getUserListByRoleList(List<SysRole> roleList) {
         if (CollectionUtils.isEmpty(roleList)) {
             return Lists.newArrayList();
