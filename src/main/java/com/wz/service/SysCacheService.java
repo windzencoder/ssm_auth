@@ -42,6 +42,7 @@ public class SysCacheService {
         }
     }
 
+    //获取缓存
     public String getFromCache(CacheKeyConstants prefix, String... keys) {
         ShardedJedis shardedJedis = null;
         String cacheKey = generateCacheKey(prefix, keys);
