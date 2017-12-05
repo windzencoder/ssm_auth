@@ -27,6 +27,9 @@ public class SysDeptService {
     @Resource
     private SysUserMapper sysUserMapper;
 
+    @Resource
+    private SysLogService sysLogService;
+
     /**
      * 保存部门
      * @param param
@@ -50,6 +53,7 @@ public class SysDeptService {
         dept.setOperateTime(new Date());
 
         sysDeptMapper.insertSelective(dept);
+        sysLogService.saveDeptLog(null, dept);
     }
 
     /**
@@ -77,6 +81,8 @@ public class SysDeptService {
         after.setOperateTime(new Date());
 
         updateWithChild(before, after);
+        //记录日志
+        sysLogService.saveDeptLog(before, after);
 
     }
 

@@ -1,5 +1,6 @@
 package com.wz.service;
 
+import ch.qos.logback.classic.net.SyslogAppender;
 import com.google.common.base.Preconditions;
 import com.wz.common.RequestHolder;
 import com.wz.dao.SysAclMapper;
@@ -28,6 +29,8 @@ public class SysAclModuleService {
     private SysAclModuleMapper sysAclModuleMapper;
     @Resource
     private SysAclMapper sysAclMapper;
+    @Resource
+    private SysLogService sysLogService;
 
 
     /**
@@ -48,7 +51,7 @@ public class SysAclModuleService {
         aclModule.setOperateTime(new Date());
 
         sysAclModuleMapper.insertSelective(aclModule);
-
+        sysLogService.saveAclModuleLog(null, aclModule);
     }
 
     /**
@@ -74,7 +77,7 @@ public class SysAclModuleService {
         after.setOperateTime(new Date());
 
         updateWithChild(before, after);
-
+        sysLogService.saveAclModuleLog(before, after);
     }
 
 

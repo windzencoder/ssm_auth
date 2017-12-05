@@ -24,6 +24,9 @@ public class SysUserService {
     @Resource
     private SysUserMapper sysUserMapper;
 
+    @Resource
+    private SysLogService sysLogService;
+
 
     /**
      * 保存用户
@@ -54,6 +57,7 @@ public class SysUserService {
 
 
         sysUserMapper.insertSelective(user);
+        sysLogService.saveUserLog(null, user);
 
     }
 
@@ -80,7 +84,7 @@ public class SysUserService {
         after.setOperateTime(new Date());
 
         sysUserMapper.updateByPrimaryKeySelective(after);
-
+        sysLogService.saveUserLog(before, after);
     }
 
 

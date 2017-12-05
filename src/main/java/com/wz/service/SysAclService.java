@@ -24,6 +24,9 @@ public class SysAclService {
     @Resource
     private SysAclMapper sysAclMapper;
 
+    @Resource
+    private SysLogService sysLogService;
+
     //保存权限点
     public void save(AclParam param) {
         BeanValidator.check(param);
@@ -39,6 +42,7 @@ public class SysAclService {
         acl.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
 
         sysAclMapper.insertSelective(acl);
+        sysLogService.saveAclLog(null, acl);
 
     }
 
@@ -58,7 +62,7 @@ public class SysAclService {
         after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
 
         sysAclMapper.updateByPrimaryKeySelective(after);
-
+        sysLogService.saveAclLog(before, after);
     }
 
     public boolean checkExist(int aclModuleId, String name, Integer id) {

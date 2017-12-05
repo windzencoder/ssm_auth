@@ -36,8 +36,8 @@ public class SysRoleService {
     @Resource
     private SysUserMapper sysUserMapper;
 
-//    @Resource
-//    private SysLogService sysLogService;
+    @Resource
+    private SysLogService sysLogService;
 
     /**
      * 保存角色
@@ -56,7 +56,7 @@ public class SysRoleService {
         role.setOperateTime(new Date());
 
         sysRoleMapper.insertSelective(role);
-//        sysLogService.saveRoleLog(null, role);
+        sysLogService.saveRoleLog(null, role);
     }
 
     /**
@@ -77,7 +77,7 @@ public class SysRoleService {
         after.setOperateIp(IpUtil.getRemoteIp(RequestHolder.getCurrentRequest()));
         after.setOperateTime(new Date());
         sysRoleMapper.updateByPrimaryKeySelective(after);
-//        sysLogService.saveRoleLog(before, after);
+        sysLogService.saveRoleLog(before, after);
     }
 
     /**
